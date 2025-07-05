@@ -13,7 +13,9 @@ return {
       "typescript-language-server",
 	  "gopls",
 	  "bash-language-serser",
-	  "clangd"
+	  "clangd",
+	  "ruff",
+	  "pyright"
     }
 
     -- Auto-install missing LSPs on startup
