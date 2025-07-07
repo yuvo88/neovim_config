@@ -18,7 +18,7 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local on_attach = function(_, bufnr)
+			local on_attach = function(client, bufnr)
 				local bufopts = { noremap = true, silent = true, buffer = bufnr }
 				local map = vim.keymap.set
 				map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, bufopts)
@@ -33,9 +33,10 @@ return {
 				map("n", "<leader>e", vim.diagnostic.open_float, bufopts)
 				map("n", "<leader>.", vim.lsp.buf.code_action, bufopts)
 				map("n", "<leader>r", vim.lsp.buf.rename, bufopts)
+				client.server_capabilities.semanticTokensProvider = nil
 			end
 
-			local servers = { "lua_ls", "ts_ls", "gopls", "bashls", "clangd", "pyright" }
+			local servers = { "lua_ls", "ts_ls", "gopls", "bashls", "clangd" }
 
 			for _, server in ipairs(servers) do
 				lspconfig[server].setup({
@@ -47,6 +48,28 @@ return {
 				on_attach = function(client)
 					client.server_capabilities.hoverProvider = false
 				end,
+			})
+			lspconfig["basedpyright"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				settings = {
+					basedpyright = {
+						analysis = {
+							autoImportCompletions = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "workspace",
+							autoSearchPath = true,
+							inlayHints = {
+								callArgumentNames = true,
+							},
+							typeCheckingMode = "off",
+						},
+						python = {
+							venvPath = "/home/john/general_venv",
+							venv = "general_venv",
+						},
+					},
+				},
 			})
 		end,
 	},
