@@ -50,4 +50,12 @@ end)
 vim.keymap.set({ "n", "i", "v" }, "<C-i>", function()
 	vim.cmd("cope")
 end)
+
+vim.api.nvim_create_user_command("LspWhoDiagnostics", function()
+	local lnum = vim.fn.line(".") - 1
+	for _, d in ipairs(vim.diagnostic.get(0, { lnum = lnum })) do
+		local client = vim.lsp.get_client_by_id(d.source)
+		print(string.format("From: %s\n  → %s", (client and client.name) or d.source or "unknown", d.message))
+	end
+end, {})
 require("config.lazy")

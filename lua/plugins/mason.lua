@@ -16,6 +16,7 @@ return {
 			"clangd",
 			"ruff",
 			"basedpyright",
+			"python-lsp-server",
 		}
 
 		-- Auto-install missing LSPs on startup
