@@ -10,13 +10,10 @@ return {
 		-- List of LSP servers (as Mason package names)
 		local servers = {
 			"lua-language-server",
-			"typescript-language-server",
-			"gopls",
 			"bash-language-serser",
 			"clangd",
 			"ruff",
 			"basedpyright",
-			"python-lsp-server",
 		}
 
 		-- Auto-install missing LSPs on startup

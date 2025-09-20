@@ -36,7 +36,7 @@ return {
 				client.server_capabilities.semanticTokensProvider = nil
 			end
 
-			local servers = { "lua_ls", "ts_ls", "gopls", "bashls", "clangd" }
+			local servers = { "lua_ls", "bashls", "clangd" }
 
 			for _, server in ipairs(servers) do
 				lspconfig[server].setup({
@@ -47,6 +47,7 @@ return {
 			lspconfig["ruff"].setup({
 				on_attach = function(client)
 					client.server_capabilities.hoverProvider = false
+					client.server_capabilities.codeActionProvider = false
 				end,
 			})
 			lspconfig["basedpyright"].setup({
@@ -62,42 +63,15 @@ return {
 							inlayHints = {
 								callArgumentNames = true,
 							},
-							typeCheckingMode = "off",
+							typeCheckingMode = "basic",
+							ignore = { "/home/john/Tamnoon-Backend/tamnoon/*" },
 						},
 						python = {
-							venvPath = "/home/john/general_venv",
-							venv = "general_venv",
-						},
-					},
-				},
-			})
-			lspconfig["pylsp"].setup({
-				settings = {
-					pylsp = {
-						plugins = {
-							pyflakes = { enabled = false },
-							pycodestyle = { enabled = false },
-							autopep8 = { enabled = false },
-							yapf = { enabled = false },
-							mccabe = { enabled = false },
-							pylsp_mypy = { enabled = true, strict = false },
-							pylsp_black = { enabled = false },
-							pylsp_isort = { enabled = false },
-							pylint = { enabled = false },
-							flake8 = { enabled = false },
-							pydocstyle = { enabled = false },
-							-- Keep navigation-related plugins enabled
-							rope_completion = { enabled = false },
-							jedi_completion = { enabled = false },
-							jedi_definition = { enabled = false },
-							jedi_hover = { enabled = false },
-							jedi_references = { enabled = false },
-							jedi_signature_help = { enabled = false },
-							jedi_symbols = { enabled = false },
-						},
-						python = {
-							venvPath = "/home/john/general_venv",
-							venv = "general_venv",
+							-- venvPath = "/home/john/general_venv",
+							-- venv = "general_venv",
+							analysis = {
+								autoImportCompletions = true,
+							},
 						},
 					},
 				},

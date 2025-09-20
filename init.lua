@@ -29,9 +29,9 @@ vim.cmd([[
 
 vim.keymap.set({ "v", "i" }, "<C-c>", "<Esc>")
 -- Surround buffer with "
-vim.keymap.set("n", "<leader>iq", 'i""<C-c>P')
+vim.keymap.set("n", "<leader>iq", 'a""<C-c>P')
 -- Surround buffer with (
-vim.keymap.set("n", "<leader>ip", "i()<C-c>P")
+vim.keymap.set("n", "<leader>ip", "a()<C-c>P")
 -- Yank all line without newline
 vim.keymap.set("n", "<leader>yy", "_y$")
 -- Delete all line without yanking newline
@@ -47,7 +47,7 @@ vim.keymap.set({ "n", "i", "v" }, "<C-q>", function()
 	vim.cmd("ccl")
 end)
 -- Focus on Quickfix(lsp references window)
-vim.keymap.set({ "n", "i", "v" }, "<C-i>", function()
+vim.keymap.set({ "n", "i", "v" }, "<C-j>", function()
 	vim.cmd("cope")
 end)
 
@@ -58,4 +58,5 @@ vim.api.nvim_create_user_command("LspWhoDiagnostics", function()
 		print(string.format("From: %s\n  → %s", (client and client.name) or d.source or "unknown", d.message))
 	end
 end, {})
+
 require("config.lazy")
