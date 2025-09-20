@@ -26,6 +26,8 @@ return {
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 		vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 		vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-		vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+		vim.keymap.set("n", "<leader>sc", builtin.command_history, { desc = '[S]earch [C]ommand History' })
+		vim.keymap.set("n", "gu", builtin.lsp_references, { desc = 'LSP [G]et [U]sages' })
+		vim.keymap.set("n", "gi", builtin.lsp_implementations, { desc = 'LSP [G]et [I]mplementation' })
 	end,
 }
