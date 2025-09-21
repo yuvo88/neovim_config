@@ -47,6 +47,11 @@ vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
 	vim.cmd("noh")
 end)
 
+-- LspRestart
+vim.keymap.set({ "n", "i", "v" }, "<leader>ir", function()
+	vim.cmd("LspRestart")
+end)
+
 
 
 require("config.lazy")
