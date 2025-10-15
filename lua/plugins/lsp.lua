@@ -16,7 +16,6 @@ return {
             "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
-            local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             capabilities.workspace = capabilities.workspace or {}
             capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
@@ -36,18 +35,20 @@ return {
             local servers = { "lua_ls", "bashls", "clangd" }
 
             for _, server in ipairs(servers) do
-                lspconfig[server].setup({
+                vim.lsp.config(server, {
                     on_attach = on_attach,
                     capabilities = capabilities,
                 })
+                vim.lsp.enable(server)
             end
-            lspconfig["ruff"].setup({
+            vim.lsp.config("ruff", {
                 on_attach = function(client)
                     client.server_capabilities.hoverProvider = false
                     client.server_capabilities.codeActionProvider = false
                 end,
             })
-            lspconfig["basedpyright"].setup({
+            vim.lsp.enable('ruff')
+            vim.lsp.config("basedpyright", {
                 on_attach = on_attach,
                 capabilities = capabilities,
                 settings = {
@@ -73,6 +74,7 @@ return {
                     },
                 },
             })
+            vim.lsp.enable('basedpyright')
         end,
     },
 }
