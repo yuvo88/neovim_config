@@ -60,6 +60,7 @@ return {
                             autoSearchPath = true,
                             inlayHints = {
                                 callArgumentNames = true,
+                                parameterNames = "all"
                             },
                             typeCheckingMode = "basic",
                             ignore = { "/home/john/Tamnoon-Backend/tamnoon/*" },

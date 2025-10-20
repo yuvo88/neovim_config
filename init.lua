@@ -47,5 +47,6 @@ vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
 	vim.cmd("noh")
 end)
 
+vim.lsp.inlay_hint.enable(true)
 
 require("config.lazy")
