@@ -28,7 +28,7 @@ return {
                 map("n", "<leader>e", vim.diagnostic.open_float, bufopts)
                 map("n", "<leader>.", vim.lsp.buf.code_action, bufopts)
                 map("n", "<leader>r", vim.lsp.buf.rename, bufopts)
-                map("n", "<leader>f", vim.lsp.buf.format, bufopts)
+                map({"n", "v"}, "<leader>f", vim.lsp.buf.format, bufopts)
                 client.server_capabilities.semanticTokensProvider = nil
             end
 
