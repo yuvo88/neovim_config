@@ -7,16 +7,17 @@ vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
+vim.o.wrap = false
 
 -- Customization
 
 -- highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
 })
 -- colorscheme
 vim.cmd([[
@@ -44,9 +45,23 @@ vim.keymap.set("v", "<leader>p", '"_dP')
 
 -- Remove highlight
 vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
-	vim.cmd("noh")
+    vim.cmd("noh")
 end)
-
+vim.keymap.set('n', '<leader>ob', function()
+    vim.cmd("normal! zz")
+    local line_number = vim.fn.line(".")
+    local filename = vim.fn.expand('%:p')
+    local result = vim.fn.systemlist("git blame -- " .. filename .. "| cut -d'(' -f 2 | cut -d ')' -f 1")
+    vim.cmd('vnew')
+    vim.cmd('vertical resize -45')
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, result)
+    vim.bo.buftype = 'nofile'
+    vim.bo.bufhidden = 'wipe'
+    vim.bo.swapfile = false
+    vim.bo.filetype = 'gitblame'
+    vim.api.nvim_win_set_cursor(0, { line_number, 0 })
+    vim.cmd("normal! zz")
+end, { desc = '[O]pen Git [B]lame' })
 vim.lsp.inlay_hint.enable(true)
 
 require("config.lazy")
