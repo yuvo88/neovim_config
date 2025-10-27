@@ -3,6 +3,8 @@ vim.g.maplocalleader = " "
 -- vim.opt.termguicolors = false
 
 vim.opt.number = true
+vim.o.scrollbind = true
+vim.o.scrolloff = 8
 vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
