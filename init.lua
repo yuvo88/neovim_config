@@ -10,6 +10,8 @@ vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.wrap = false
+vim.o.diffopt = vim.o.diffopt .. ",vertical"
+vim.o.diffopt = vim.o.diffopt .. ",iwhite"
 
 -- Customization
 
