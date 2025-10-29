@@ -13,6 +13,12 @@ vim.o.wrap = false
 vim.o.diffopt = vim.o.diffopt .. ",vertical"
 vim.o.diffopt = vim.o.diffopt .. ",iwhite"
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.o.textwidth = 80
+  end,
+})
 -- Customization
 
 -- highlight on yank
@@ -51,6 +57,8 @@ vim.keymap.set("v", "<leader>p", '"_dP')
 vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
     vim.cmd("noh")
 end)
+
+-- Git blame command
 vim.keymap.set('n', '<leader>ob', function()
     vim.cmd("normal! zz")
     local line_number = vim.fn.line(".")
@@ -66,6 +74,7 @@ vim.keymap.set('n', '<leader>ob', function()
     vim.api.nvim_win_set_cursor(0, { line_number, 0 })
     vim.cmd("normal! zz")
 end, { desc = '[O]pen Git [B]lame' })
+
 vim.lsp.inlay_hint.enable(true)
 
 require("config.lazy")
