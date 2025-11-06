@@ -28,7 +28,8 @@ return {
 		vim.keymap.set("n", "<leader>sc", builtin.command_history, { desc = '[S]earch [C]ommand History' })
 		vim.keymap.set("n", "<leader>sl", builtin.live_grep, { desc = '[S]earch [L]ive Grep' })
 		vim.keymap.set("n", "gu", builtin.lsp_references, { desc = 'LSP [G]et [U]sages' })
-		vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = 'LSP [G]et [U]sages' })
+		vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = 'LSP [G]et [D]efinitions' })
 		vim.keymap.set("n", "gi", builtin.lsp_implementations, { desc = 'LSP [G]et [I]mplementation' })
+		vim.keymap.set("n", "ge", builtin.diagnostics, { desc = 'LSP [G]et [E]rrors' })
 	end,
 }
