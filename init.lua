@@ -59,7 +59,7 @@ vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
 end)
 
 -- Git blame command
-vim.keymap.set('n', '<leader>ob', function()
+vim.keymap.set('n', '<leader>gb', function()
     vim.cmd("normal! zz")
     local line_number = vim.fn.line(".")
     local filename = vim.fn.expand('%:p')
@@ -73,7 +73,7 @@ vim.keymap.set('n', '<leader>ob', function()
     vim.bo.filetype = 'gitblame'
     vim.api.nvim_win_set_cursor(0, { line_number, 0 })
     vim.cmd("normal! zz")
-end, { desc = '[O]pen Git [B]lame' })
+end, { desc = '[G]it [B]lame' })
 
 vim.lsp.inlay_hint.enable(true)
 
