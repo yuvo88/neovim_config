@@ -74,6 +74,10 @@ vim.keymap.set('n', '<leader>gb', function()
     vim.api.nvim_win_set_cursor(0, { line_number, 0 })
     vim.cmd("normal! zz")
 end, { desc = '[G]it [B]lame' })
+vim.keymap.set('n', '<leader>cr', function()
+    vim.cmd(":%s/\r//g")
+end, { desc = '[C]lear Carriage [R]eturn' }
+)
 
 vim.lsp.inlay_hint.enable(true)
 
