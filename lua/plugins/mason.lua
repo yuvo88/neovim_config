@@ -14,6 +14,8 @@ return {
 			"clangd",
 			"ruff",
 			"basedpyright",
+            "rust-analyzer",
+            "rustfmt",
 		}
 
 		-- Auto-install missing LSPs on startup

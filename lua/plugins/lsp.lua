@@ -17,6 +17,7 @@ return {
         },
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local util = require("lspconfig.util")
             capabilities.workspace = capabilities.workspace or {}
             capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
             local on_attach = function(client, bufnr)
@@ -28,11 +29,11 @@ return {
                 map("n", "<leader>e", vim.diagnostic.open_float, bufopts)
                 map("n", "<leader>.", vim.lsp.buf.code_action, bufopts)
                 map("n", "<leader>r", vim.lsp.buf.rename, bufopts)
-                map({"n", "v"}, "<leader>f", vim.lsp.buf.format, bufopts)
+                map({ "n", "v" }, "<leader>f", vim.lsp.buf.format, bufopts)
                 client.server_capabilities.semanticTokensProvider = nil
             end
 
-            local servers = { "lua_ls", "bashls", "clangd" }
+            local servers = { "lua_ls", "bashls", "clangd"}
 
             for _, server in ipairs(servers) do
                 vim.lsp.config(server, {
@@ -41,13 +42,39 @@ return {
                 })
                 vim.lsp.enable(server)
             end
+            vim.lsp.config("rust_analyzer", {
+                cmd = { "rust-analyzer" },
+                on_attach = on_attach,
+                capabilities = capabilities,
+                -- root_dir = util.root_pattern("Cargo.toml"),
+
+                single_file_support = false,
+
+                settings = {
+                    ["rust-analyzer"] = {
+                        cargo = {
+                            allFeatures = true,
+                            -- You can also use:
+                            -- features = "all",
+                        },
+                        checkOnSave = true,
+                        procMacro = {
+                            enable = true,
+                        },
+                        rustfmt = {
+                            enable = true,
+                        },
+                    },
+                }
+            })
+            vim.lsp.enable("rust_analyzer")
             vim.lsp.config("ruff", {
                 on_attach = function(client)
                     client.server_capabilities.hoverProvider = false
                     client.server_capabilities.codeActionProvider = false
                 end,
             })
-            vim.lsp.enable('ruff')
+            vim.lsp.enable("ruff")
             vim.lsp.config("basedpyright", {
                 on_attach = on_attach,
                 capabilities = capabilities,
