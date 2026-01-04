@@ -13,6 +13,7 @@ vim.o.wrap = false
 vim.o.diffopt = vim.o.diffopt .. ",vertical"
 vim.o.diffopt = vim.o.diffopt .. ",iwhite"
 
+vim.keymap.set('t', '<C-q>', [[<C-\><C-n>]], { noremap = true, silent = true })
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
