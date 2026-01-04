@@ -34,7 +34,11 @@ vim.cmd([[
 	colorscheme unokai
 	set clipboard^=unnamedplus
 ]])
-
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 -- Keybindings
 
 vim.keymap.set({ "v", "i" }, "<C-c>", "<Esc>")

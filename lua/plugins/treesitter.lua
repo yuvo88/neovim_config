@@ -6,7 +6,7 @@ return {
     },
     config = function()
         require("nvim-treesitter.configs").setup {
-            ensure_installed = { "lua", "c", "rust", "python", "bash", "markdown" },
+            ensure_installed = { "lua", "c", "rust", "python", "bash", "markdown", "json"},
             auto_install = true,
             highlight = {
                 enable = true,
