@@ -90,11 +90,8 @@ return {
                                 parameterNames = "all"
                             },
                             typeCheckingMode = "basic",
-                            ignore = { "/home/john/Tamnoon-Backend/tamnoon/*" },
                         },
                         python = {
-                            -- venvPath = "/home/john/general_venv",
-                            -- venv = "general_venv",
                             analysis = {
                                 autoImportCompletions = true,
                             },
