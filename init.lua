@@ -62,7 +62,9 @@ vim.keymap.set("v", "<leader>p", '"_dP')
 vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()
     vim.cmd("noh")
 end)
-
+vim.keymap.set({ "n", "i", "v" }, "<C-j>", function()
+	vim.cmd("cope")
+end)
 -- Git blame command
 vim.keymap.set('n', '<leader>gb', function()
     vim.cmd("normal! zz")
