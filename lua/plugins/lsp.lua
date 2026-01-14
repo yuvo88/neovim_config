@@ -18,6 +18,14 @@ return {
 		"saghen/blink.cmp",
 	},
 	config = function()
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if client then
+					client.server_capabilities.semanticTokensProvider = nil
+				end
+			end,
+		})
 		local map = vim.keymap.set
 		map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help)
 		map("n", "K", vim.lsp.buf.hover)
