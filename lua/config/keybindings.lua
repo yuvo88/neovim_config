@@ -1,18 +1,14 @@
-vim.keymap.set({ "v", "i" }, "<C-c>", "<Esc>")
--- Surround buffer with "
-vim.keymap.set("n", "<leader>iq", 'a""<C-c>P')
--- Surround buffer with (
-vim.keymap.set("n", "<leader>ip", "a()<C-c>P")
--- Yank all line without newline
-vim.keymap.set("n", "<leader>yy", "_y$")
--- Delete all line without yanking newline
-vim.keymap.set("n", "<leader>dd", "_d$")
 -- Start a new line in command mode
 vim.keymap.set("n", "<leader>o", "o<C-c>")
 -- Start a new line in command mode above current line
 vim.keymap.set("n", "<leader>O", "O<C-c>")
 -- Paste without overriding buffer
 vim.keymap.set("v", "<leader>p", '"_dP')
+-- Exit terminal mode
+vim.keymap.set('t', '<C-q>', [[<C-\><C-n>]], { noremap = true, silent = true })
+-- Diff current windows
+vim.keymap.set("n", "<leader>df", function() vim.cmd("windo diffthis") end)
+
 
 -- Remove highlight
 vim.keymap.set({ "n", "i", "v" }, "<C-h>", function()

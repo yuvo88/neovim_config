@@ -1,105 +1,102 @@
 return {
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            {
-                "folke/lazydev.nvim",
-                ft = "lua", -- only load on lua files
-                opts = {
-                    library = {
-                        -- See the configuration section for more details
-                        -- Load luvit types when the `vim.uv` word is found
-                        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                    },
-                },
-            },
-            "hrsh7th/cmp-nvim-lsp",
-        },
-        config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local util = require("lspconfig.util")
-            capabilities.workspace = capabilities.workspace or {}
-            capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
-            local on_attach = function(client, bufnr)
-                local bufopts = { noremap = true, silent = true, buffer = bufnr }
-                local map = vim.keymap.set
-                map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, bufopts)
-                map("n", "K", vim.lsp.buf.hover, bufopts)
-                map("n", "gD", vim.lsp.buf.declaration, bufopts)
-                map("n", "<leader>e", vim.diagnostic.open_float, bufopts)
-                map("n", "<leader>.", vim.lsp.buf.code_action, bufopts)
-                map("n", "<leader>r", vim.lsp.buf.rename, bufopts)
-                map({ "n", "v" }, "<leader>f", vim.lsp.buf.format, bufopts)
-                client.server_capabilities.semanticTokensProvider = nil
-            end
+	"neovim/nvim-lspconfig",
+	dependencies = {
+		{
+			"folke/lazydev.nvim",
+			ft = "lua", -- only load on lua files
+			opts = {
+				library = {
+					-- See the configuration section for more details
+					-- Load luvit types when the `vim.uv` word is found
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				},
+			},
+		},
+		{ "mason-org/mason.nvim", opts = {} },
+		"mason-org/mason-lspconfig.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		"saghen/blink.cmp",
+	},
+	config = function()
+		local map = vim.keymap.set
+		map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help)
+		map("n", "K", vim.lsp.buf.hover)
+		map("n", "<leader>e", vim.diagnostic.open_float)
+		map("n", "<leader>.", vim.lsp.buf.code_action)
+		map("n", "<leader>r", vim.lsp.buf.rename)
+		map({ "n", "v" }, "<leader>f", vim.lsp.buf.format)
+		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		local servers = {
+			clangd = {},
+			basedpyright = {
+				capabilities = capabilities,
+				settings = {
+					basedpyright = {
+						analysis = {
+							autoImportCompletions = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "workspace",
+							autoSearchPath = true,
+							inlayHints = {
+								callArgumentNames = true,
+								parameterNames = "all",
+							},
+							typeCheckingMode = "basic",
+						},
+						python = {
+							analysis = {
+								autoImportCompletions = true,
+							},
+						},
+					},
+				},
+			},
+			rust_analyzer = {
+				cmd = { "rust-analyzer" },
+				capabilities = capabilities,
+				single_file_support = false,
 
-            local servers = { "lua_ls", "bashls", "clangd"}
+				settings = {
+					["rust-analyzer"] = {
+						cargo = {
+							allFeatures = true,
+							-- You can also use:
+							-- features = "all",
+						},
+						checkOnSave = true,
+						procMacro = {
+							enable = true,
+						},
+						rustfmt = {
+							enable = true,
+						},
+					},
+				},
+			},
+			ruff = {
+				on_attach = function(client)
+					client.server_capabilities.hoverProvider = false
+					client.server_capabilities.codeActionProvider = false
+				end,
+			},
+			lua_ls = {},
+		}
+		local ensure_installed = vim.tbl_keys(servers or {})
+		vim.list_extend(ensure_installed, {
+			"stylua", -- Used to format Lua code
+		})
+		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-            for _, server in ipairs(servers) do
-                vim.lsp.config(server, {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                })
-                vim.lsp.enable(server)
-            end
-            vim.lsp.config("rust_analyzer", {
-                cmd = { "rust-analyzer" },
-                on_attach = on_attach,
-                capabilities = capabilities,
-                -- root_dir = util.root_pattern("Cargo.toml"),
-
-                single_file_support = false,
-
-                settings = {
-                    ["rust-analyzer"] = {
-                        cargo = {
-                            allFeatures = true,
-                            -- You can also use:
-                            -- features = "all",
-                        },
-                        checkOnSave = true,
-                        procMacro = {
-                            enable = true,
-                        },
-                        rustfmt = {
-                            enable = true,
-                        },
-                    },
-                }
-            })
-            vim.lsp.enable("rust_analyzer")
-            vim.lsp.config("ruff", {
-                on_attach = function(client)
-                    client.server_capabilities.hoverProvider = false
-                    client.server_capabilities.codeActionProvider = false
-                end,
-            })
-            vim.lsp.enable("ruff")
-            vim.lsp.config("basedpyright", {
-                on_attach = on_attach,
-                capabilities = capabilities,
-                settings = {
-                    basedpyright = {
-                        analysis = {
-                            autoImportCompletions = true,
-                            useLibraryCodeForTypes = true,
-                            diagnosticMode = "workspace",
-                            autoSearchPath = true,
-                            inlayHints = {
-                                callArgumentNames = true,
-                                parameterNames = "all"
-                            },
-                            typeCheckingMode = "basic",
-                        },
-                        python = {
-                            analysis = {
-                                autoImportCompletions = true,
-                            },
-                        },
-                    },
-                },
-            })
-            vim.lsp.enable('basedpyright')
-        end,
-    },
+		require("mason-lspconfig").setup({
+			ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+			automatic_installation = false,
+			handlers = {
+				function(server_name)
+					local server = servers[server_name] or {}
+					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+					require("lspconfig")[server_name].setup(server)
+				end,
+			},
+		})
+	end,
 }
