@@ -22,9 +22,33 @@ return {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
 				if client then
+					if client.name == "ruff" then
+						client.server_capabilities.diagnosticProvider = false
+						client.server_capabilities.hoverProvider = false
+						client.server_capabilities.codeActionProvider = false
+						client.server_capabilities.renameProvider = false
+						client.server_capabilities.documentFormattingProvider = true
+						client.server_capabilities.documentRangeFormattingProvider = true
+					end
 					client.server_capabilities.semanticTokensProvider = nil
 				end
 			end,
+		})
+		vim.diagnostic.config({
+			virtual_text = false,
+			signs = true,
+			underline = true,
+			update_in_insert = true,
+			severity_sort = true,
+			float = {
+				focusable = true,
+				style = "minimal",
+				source = "if_many",
+				header = "",
+				prefix = "",
+				scope = "cursor",
+				severity_sort = true,
+			},
 		})
 		local map = vim.keymap.set
 		map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help)
@@ -34,31 +58,10 @@ return {
 		map("n", "<leader>r", vim.lsp.buf.rename)
 		map({ "n", "v" }, "<leader>f", vim.lsp.buf.format)
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
+
 		local servers = {
 			clangd = {},
-			basedpyright = {
-				capabilities = capabilities,
-				settings = {
-					basedpyright = {
-						analysis = {
-							autoImportCompletions = true,
-							useLibraryCodeForTypes = true,
-							diagnosticMode = "workspace",
-							autoSearchPath = true,
-							inlayHints = {
-								callArgumentNames = true,
-								parameterNames = "all",
-							},
-							typeCheckingMode = "basic",
-						},
-						python = {
-							analysis = {
-								autoImportCompletions = true,
-							},
-						},
-					},
-				},
-			},
+			ty = {},
 			rust_analyzer = {
 				cmd = { "rust-analyzer" },
 				capabilities = capabilities,
