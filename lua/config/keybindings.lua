@@ -37,3 +37,6 @@ vim.keymap.set('n', '<leader>cr', function()
     vim.cmd(":%s/\r//g")
 end, { desc = '[C]lear Carriage [R]eturn' }
 )
+
+--YAAP find last prompt
+vim.keymap.set('n', '<leader>k', '/>>>>\nNN')

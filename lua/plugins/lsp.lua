@@ -23,7 +23,6 @@ return {
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
 				if client then
 					if client.name == "ruff" then
-						client.server_capabilities.diagnosticProvider = false
 						client.server_capabilities.hoverProvider = false
 						client.server_capabilities.codeActionProvider = false
 						client.server_capabilities.renameProvider = false
@@ -62,6 +61,8 @@ return {
 		local servers = {
 			clangd = {},
 			ty = {},
+			gopls={},
+			terraformls={},
 			rust_analyzer = {
 				cmd = { "rust-analyzer" },
 				capabilities = capabilities,
