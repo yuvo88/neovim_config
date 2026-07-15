@@ -61,8 +61,8 @@ return {
 		local servers = {
 			clangd = {},
 			ty = {},
-			gopls={},
-			terraformls={},
+			gopls = {},
+			terraformls = {},
 			rust_analyzer = {
 				cmd = { "rust-analyzer" },
 				capabilities = capabilities,
@@ -92,6 +92,7 @@ return {
 				end,
 			},
 			lua_ls = {},
+			ts_ls = {},
 		}
 		local ensure_installed = vim.tbl_keys(servers or {})
 		vim.list_extend(ensure_installed, {
