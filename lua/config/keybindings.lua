@@ -1,6 +1,3 @@
-if vim.g.terminal_counter == nil then
-	vim.g.terminal_counter = 0
-end
 -- Start a new line in command mode
 vim.keymap.set("n", "<leader>o", "o<C-c>")
 -- Start a new line in command mode above current line
@@ -22,12 +19,22 @@ vim.keymap.set({ "n", "i", "v" }, "<C-j>", function()
 	vim.cmd("cope")
 end)
 
-vim.keymap.set({ "n" }, "<leader>t", function()
-	vim.cmd("term")
-	vim.g.terminal_counter = vim.g.terminal_counter + 1
-	vim.cmd(":file terminal" .. vim.g.terminal_counter)
-	vim.cmd("startinsert")
-end)
+local function open_numbered_terminal()
+    if vim.g.terminal_counter == nil then
+        vim.g.terminal_counter = 0
+    end
+
+    vim.cmd("term")
+    vim.g.terminal_counter = vim.g.terminal_counter + 1
+    vim.cmd("file terminal" .. vim.g.terminal_counter)
+    vim.cmd("startinsert")
+end
+
+vim.api.nvim_create_user_command("Nterm", function()
+    open_numbered_terminal()
+end, { desc = "Open a numbered terminal" })
+
+vim.keymap.set({ "n" }, "<leader>t", open_numbered_terminal, { desc = "Open numbered terminal" })
 for i = 1, 9 do
 	vim.keymap.set({ "t" }, "<M-" .. i .. ">", function()
 		vim.cmd("b terminal" .. i)

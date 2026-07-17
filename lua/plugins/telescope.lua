@@ -9,7 +9,7 @@ return {
 				file_ignore_patterns = {
 					"build/**",
 					"dist/**",
-					".git",
+					"%.git",
 				},
 				extensions = {
 					["ui-select"] = {
