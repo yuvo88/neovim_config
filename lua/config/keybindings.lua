@@ -19,40 +19,6 @@ vim.keymap.set({ "n", "i", "v" }, "<C-j>", function()
 	vim.cmd("cope")
 end)
 
-local terminal = {}
-
-local function open_numbered_terminal()
-	vim.cmd("term")
-	table.insert(terminal, vim.api.nvim_get_current_buf())
-	vim.cmd("startinsert")
-end
-local function close_numbered_terminal()
-	local current_buf = vim.api.nvim_get_current_buf()
-	for i, bufid in ipairs(terminal) do
-		if bufid == current_buf then
-			table.remove(terminal, i)
-			break
-		end
-	end
-	vim.cmd("bd!")
-end
-
-vim.api.nvim_create_user_command("Nterm", function()
-	open_numbered_terminal()
-end, { desc = "Open a numbered terminal" })
-
-vim.keymap.set({ "n" }, "<M-t>", open_numbered_terminal, { desc = "Open numbered terminal" })
-vim.keymap.set({ "t" }, "<M-t>", open_numbered_terminal, { desc = "Open numbered terminal" })
-vim.keymap.set({ "n" }, "<M-w>", close_numbered_terminal, { desc = "Open numbered terminal" })
-vim.keymap.set({ "t" }, "<M-w>", close_numbered_terminal, { desc = "Open numbered terminal" })
-for i = 1, 9 do
-	vim.keymap.set({ "t" }, "<M-" .. i .. ">", function()
-		vim.cmd("b " .. terminal[i])
-	end)
-	vim.keymap.set({ "n" }, "<M-" .. i .. ">", function()
-		vim.cmd("b " .. terminal[i])
-	end)
-end
 -- Git blame command
 vim.keymap.set("n", "<leader>gb", function()
 	vim.cmd("normal! zz")
